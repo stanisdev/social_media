@@ -1,0 +1,10 @@
+'use strict';
+
+const { resolve } = require('path');
+
+module.exports = {
+  'config': resolve('config', 'database.json'),
+  'models-path': resolve('storages', 'database', 'models'),
+  'seeders-path': resolve('storages', 'database', 'seeders'),
+  'migrations-path': resolve('storages', 'database', 'migrations')
+}
