@@ -33,8 +33,8 @@ module.exports = {
       salt: {
         type: Sequelize.CHAR(5)
       },
-      status: {
-        type: Sequelize.TINYINT,
+      state: {
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       gender: {

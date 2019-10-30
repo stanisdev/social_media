@@ -5,7 +5,7 @@
     "database": "social_media",
     "host": "127.0.0.1",
     "port": 3306,
-    "dialect": "mysql",
+    "dialect": "mariadb",
     "define": {
       "underscored": true
     }
@@ -15,7 +15,7 @@
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql",
+    "dialect": "mariadb",
     "operatorsAliases": false
   },
   "production": {
@@ -23,7 +23,7 @@
     "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "mysql",
+    "dialect": "mariadb",
     "operatorsAliases": false
   }
 }
