@@ -4,7 +4,7 @@
   "description": "API Social Network Implementation",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "local": "NODE_ENV=local nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -26,11 +26,13 @@
   "homepage": "https://github.com/stanisdev/social_media#readme",
   "dependencies": {
     "@hapi/hapi": "18.4.0",
+    "lodash": "4.17.15",
     "mariadb": "2.1.2",
     "sequelize": "5.21.1"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "sequelize-cli": "^5.5.1"
+    "eslint": "6.6.0",
+    "nodemon": "1.19.4",
+    "sequelize-cli": "5.5.1"
   }
 }

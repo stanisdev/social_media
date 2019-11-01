@@ -1,10 +1,18 @@
 'use strict';
 
-module.exports = {
-  method: 'GET',
-  path: '/register',
-  handler: async function (req, h) {
+const plugin = {
+  name: 'Register route',
+  register: async function (server, options) {
 
-    return { ok: true, message: 'registered' };
+    server.route({
+      method: 'GET',
+      path: '/register',
+      handler: function (req, h) {
+
+        return { ok: true, message: 'Registered' };
+      }
+    });
   }
 };
+
+module.exports = plugin;

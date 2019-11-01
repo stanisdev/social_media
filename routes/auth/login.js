@@ -1,10 +1,18 @@
 'use strict';
 
-module.exports = {
-  method: 'GET',
-  path: '/login',
-  handler: async function (req, h) {
+const plugin = {
+  name: 'Login route',
+  register: async function (server, options) {
 
-    return { ok: true };
+    server.route({
+      method: 'GET',
+      path: '/login',
+      handler: function (req, h) {
+
+        return { ok: true, message: 'Loged in' };
+      }
+    });
   }
 };
+
+module.exports = plugin;

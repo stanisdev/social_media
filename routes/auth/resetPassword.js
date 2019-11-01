@@ -1,10 +1,19 @@
 'use strict';
 
-module.exports = {
-  method: 'GET',
-  path: '/reset_password',
-  handler: async function (req, h) {
+const plugin = {
+  name: 'Reseting of password route',
+  register: async function (server, options) {
 
-    return { ok: true, message: 'password reseted' };
+    server.route({
+      method: 'GET',
+      path: '/reset_password',
+      handler: function (req, h) {
+
+      	options.authService.resetPassword();
+        return { ok: true, message: 'Password reseted' };
+      }
+    });
   }
 };
+
+module.exports = plugin;

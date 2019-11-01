@@ -1,14 +1,18 @@
 'use strict';
 
+const AuthService = require('./AuthService');
+
 const plugin = {
   name: 'Auth routes',
   register: async function (server, options) {
 
-    server.route([
-    	require('./login'),
-    	require('./register'),
-    	require('./resetPassword')
-    ]);
+  	const authService = new AuthService(server.app.db);
+
+  	await server.register([
+  		{ plugin: require('./login') },
+  		{ plugin: require('./register') },
+  		{ plugin: require('./resetPassword'), options: { authService } }
+  	]);
   }
 };
 
