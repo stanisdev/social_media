@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserRelationships', {
+    return queryInterface.createTable("UserRelationships", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,29 +13,29 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Users",
+          key: "id"
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       inferior_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Users",
+          key: "id"
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       state: {
         type: Sequelize.TINYINT.UNSIGNED,
-        allowNull: false,
+        allowNull: false
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserRelationships');
+    return queryInterface.dropTable("UserRelationships");
   }
 };

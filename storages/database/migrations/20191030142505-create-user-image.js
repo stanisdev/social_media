@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('UserImages', {
+    return queryInterface.createTable("UserImages", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,17 +18,17 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Users",
+          key: "id"
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE"
       },
       description: {
         type: Sequelize.TEXT
       },
       state: {
-        type: Sequelize.TINYINT.UNSIGNED, // availability
+        type: Sequelize.TINYINT.UNSIGNED // availability
       },
       created_at: {
         allowNull: false,
@@ -41,6 +41,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserImages');
+    return queryInterface.dropTable("UserImages");
   }
 };
