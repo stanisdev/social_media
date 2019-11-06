@@ -2,7 +2,7 @@
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('Comments', {
+		return queryInterface.createTable('comments', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				references: {
-					model: 'Users',
+					model: 'users',
 					key: 'id'
 				},
 				onUpdate: 'CASCADE',
@@ -22,7 +22,7 @@ module.exports = {
 			user_post_id: {
 				type: Sequelize.INTEGER,
 				references: {
-					model: 'UserPosts',
+					model: 'user_posts',
 					key: 'id'
 				},
 				onUpdate: 'CASCADE',
@@ -31,7 +31,7 @@ module.exports = {
 			user_image_id: {
 				type: Sequelize.INTEGER,
 				references: {
-					model: 'UserImages',
+					model: 'user_images',
 					key: 'id'
 				},
 				onUpdate: 'CASCADE',
@@ -52,6 +52,6 @@ module.exports = {
 		});
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('Comments');
+		return queryInterface.dropTable('comments');
 	}
 };

@@ -30,6 +30,7 @@
     "@hapi/hapi": "18.4.0",
     "lodash": "4.17.15",
     "mariadb": "2.1.2",
+    "nanoid": "2.1.6",
     "sequelize": "5.21.1"
   },
   "devDependencies": {

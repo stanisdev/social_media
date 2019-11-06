@@ -2,7 +2,7 @@
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('UserLikes', {
+		return queryInterface.createTable('user_likes', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false,
 				references: {
-					model: 'Users',
+					model: 'users',
 					key: 'id'
 				},
 				onUpdate: 'CASCADE',
@@ -22,7 +22,7 @@ module.exports = {
 			user_post_id: {
 				type: Sequelize.INTEGER,
 				references: {
-					model: 'UserPosts',
+					model: 'user_posts',
 					key: 'id'
 				},
 				onUpdate: 'CASCADE',
@@ -31,6 +31,6 @@ module.exports = {
 		});
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('UserLikes');
+		return queryInterface.dropTable('user_likes');
 	}
 };
