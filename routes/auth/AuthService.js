@@ -1,7 +1,5 @@
 'use strict';
 
-const nanoid = require('nanoid/async');
-
 class AuthService {
 	constructor(db, mailer) {
 		this.db = db;
@@ -17,17 +15,36 @@ class AuthService {
 	 */
 	async register(email) {
 		const { UserEmail, ConfirmationCode } = this.db;
+		const userEmail = await UserEmail.findByEmail(email);
 
-		const userEmail = await UserEmail.findOne({
-			where: { email }
-		});
+		/**
+		 * Email found
+		 */
 		if (userEmail instanceof Object) {
 			if (Number.isInteger(userEmail.user_id)) {
-				throw new Error('The email already used');
+				throw new Error('The email already used'); // @todo: do not response such error
 			}
-			return this.mailer.send(); // Resend confirmation code
+			const confirmCode = await ConfirmationCode.findByUserEmailId(
+				userEmail.id
+			);
+
+			let code;
+			if (!(confirmCode instanceof Object)) {
+				// If record does not exist then create code
+				code = await ConfirmationCode.generateCode();
+				await ConfirmationCode.create({
+					user_email_id: userEmail.id,
+					code
+				});
+			} else {
+				code = confirmCode.code;
+			}
+			return this.mailer.send(email, { code }); // Resend confirmation code
 		}
 
+		/**
+		 * Expected way
+		 */
 		const newUserEmail = UserEmail.build({ email, state: 0 });
 		try {
 			await newUserEmail.validate();
@@ -36,13 +53,13 @@ class AuthService {
 		}
 
 		await newUserEmail.save();
-		const code = await nanoid(25);
+		const code = await ConfirmationCode.generateCode();
 		await ConfirmationCode.create({
 			user_email_id: newUserEmail.id,
 			code
 		});
 
-		return this.mailer.send(); // Send confirmation code
+		return this.mailer.send(email, { code }); // Send confirmation code
 	}
 }
 

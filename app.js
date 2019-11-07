@@ -16,6 +16,10 @@ async function init() {
 	});
 
 	await server.register({
+		plugin: require('./services/mailer')
+	});
+
+	await server.register({
 		plugin: require('./routes')
 	});
 

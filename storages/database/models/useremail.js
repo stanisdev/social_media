@@ -3,7 +3,15 @@
 module.exports = (sequelize, DataTypes) => {
 	const { Sequelize, models } = sequelize;
 	const Model = Sequelize.Model;
-	class UserEmail extends Model {}
+
+	class UserEmail extends Model {
+		static findByEmail(email) {
+			return this.findOne({
+				where: { email },
+				attributes: ['id', 'user_id']
+			});
+		}
+	}
 
 	UserEmail.init(
 		{

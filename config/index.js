@@ -9,7 +9,14 @@ const config = {
 		rootDir,
 		databaseDir: join(rootDir, 'storages', 'database', 'models'),
 		host: 'localhost',
-		port: 3000
+		port: 3000,
+		mailer: {
+			service: 'Yandex',
+			auth: {
+				user: 'media.5ocial@yandex.ru',
+				pass: process.env.MAILER_PASS
+			}
+		}
 	},
 	test: {
 		port: 3001
