@@ -15,7 +15,8 @@ module.exports = {
 				unique: true
 			},
 			first_name: {
-				type: Sequelize.STRING(70)
+				type: Sequelize.STRING(70),
+				allowNull: false
 			},
 			middle_name: {
 				type: Sequelize.STRING(70)
@@ -28,10 +29,12 @@ module.exports = {
 				unique: true
 			},
 			password: {
-				type: Sequelize.CHAR(60)
+				type: Sequelize.CHAR(60),
+				allowNull: false
 			},
 			salt: {
-				type: Sequelize.CHAR(5)
+				type: Sequelize.CHAR(5),
+				allowNull: false
 			},
 			state: {
 				type: Sequelize.TINYINT.UNSIGNED,

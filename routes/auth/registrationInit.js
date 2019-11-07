@@ -3,11 +3,11 @@
 const Joi = require('@hapi/joi');
 
 const plugin = {
-	name: 'Register route',
+	name: 'Initialization of registration',
 	register: async function(server, options) {
 		server.route({
 			method: 'POST',
-			path: '/register',
+			path: '/registration-init',
 			options: {
 				validate: {
 					payload: {
@@ -15,13 +15,14 @@ const plugin = {
 							.email()
 							.min(6)
 							.max(70)
+							.required()
 					}
 				}
 			},
 			handler: async function(req, h) {
 				const { email } = req.payload;
-				await options.authService.register(email);
-				return { ok: true, message: 'Registered' };
+				await options.authService.registrationInit(email);
+				return { ok: true };
 			}
 		});
 	}

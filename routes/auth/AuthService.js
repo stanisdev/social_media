@@ -1,5 +1,7 @@
 'use strict';
 
+const { isEmpty } = require('lodash');
+
 class AuthService {
 	constructor(db, mailer) {
 		this.db = db;
@@ -11,9 +13,9 @@ class AuthService {
 	}
 
 	/**
-	 * Registartion of new user
+	 * Initialization of registration of new user
 	 */
-	async register(email) {
+	async registrationInit(email) {
 		const { UserEmail, ConfirmationCode } = this.db;
 		const userEmail = await UserEmail.findByEmail(email);
 
@@ -60,6 +62,50 @@ class AuthService {
 		});
 
 		return this.mailer.send(email, { code }); // Send confirmation code
+	}
+
+	/**
+	 * Completion of registration
+	 */
+	async registrationComplete({
+		firstName,
+		lastName,
+		birthDate,
+		gender,
+		password,
+		code
+	}) {
+		const { User, ConfirmationCode } = this.db;
+
+		const confirmCode = await ConfirmationCode.findOne({
+			where: { code }
+		});
+		if (!(confirmCode instanceof Object)) {
+			throw new Error('Wrong confirmation code');
+		}
+
+		const user = User.build({
+			first_name: firstName,
+			birth_date: birthDate,
+			gender,
+			password,
+			state: 1
+		});
+		if (!isEmpty(lastName)) {
+			user.set('last_name', lastName);
+		}
+
+		await user.cryptPassword();
+		await user.setUid();
+
+		try {
+			await user.validate();
+		} catch (err) {
+			throw new Error(err); // @todo: add more adequate handler
+		}
+
+		// await user.save();
+		// @todo: use transaction within several additional actions
 	}
 }
 

@@ -11,7 +11,8 @@ const plugin = {
 
 		await server.register([
 			{ plugin: require('./login'), options },
-			{ plugin: require('./register'), options },
+			{ plugin: require('./registrationInit'), options },
+			{ plugin: require('./registrationComplete'), options },
 			{ plugin: require('./resetPassword'), options }
 		]);
 	}
