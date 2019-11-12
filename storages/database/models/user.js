@@ -7,7 +7,7 @@ const saltRounds = 10; // @todo: move to config
 
 module.exports = (sequelize, DataTypes) => {
 	const { Sequelize, models } = sequelize;
-	const Model = Sequelize.Model;
+	const { Model, Op } = Sequelize;
 
 	class User extends Model {
 		async cryptPassword() {
@@ -30,6 +30,48 @@ module.exports = (sequelize, DataTypes) => {
 				}
 			}
 			throw new Error('Unexpected error. The uid value cannot be generated.');
+		}
+
+		assertRegistration(confirmCode) {
+			return sequelize.transaction(t => {
+				return this.save({ transaction: t }).then(user => {
+					return models.UserEmail.update(
+						{ user_id: user.id, state: 1 },
+						{ where: { id: confirmCode.user_email_id }, transaction: t }
+					).then(() => {
+						return models.ConfirmationCode.destroy({
+							where: { id: confirmCode.id },
+							transaction: t
+						});
+					});
+				});
+			});
+		}
+
+		static findByEmail(email) {
+			return models.UserEmail.findOne({
+				where: {
+					email,
+					state: {
+						[Op.gt]: 0
+					}
+				},
+				attributes: ['id'],
+				include: [
+					{
+						model: User,
+						attributes: ['id', 'first_name', 'password', 'salt', 'state']
+					}
+				]
+			});
+		}
+
+		checkPassword(password) {
+			return bcrypt.compare(password + this.salt, this.password);
+		}
+
+		setLastVisit() {
+			return this.set('last_visit', new Date()).save();
 		}
 	}
 

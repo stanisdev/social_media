@@ -52,7 +52,9 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	);
 
-	const { ConfirmationCode } = models;
+	const { ConfirmationCode, User } = models;
+	User.hasMany(UserEmail);
+	UserEmail.belongsTo(User);
 	UserEmail.hasOne(ConfirmationCode);
 	ConfirmationCode.belongsTo(UserEmail);
 

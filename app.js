@@ -12,15 +12,26 @@ async function init() {
 		host: config.host
 	});
 
-	server.events.on({ name: 'request', channels: 'error' }, (request, event, tags) => {
-		const { error } = event;
-		if (error instanceof Error) {
-			console.error(error.stack); // @todo: prinit more details
+	server.events.on(
+		{ name: 'request', channels: 'error' },
+		(request, event, tags) => {
+			const { error } = event;
+			if (error instanceof Error) {
+				console.error(error.stack); // @todo: prinit more details
+			}
 		}
+	);
+
+	await server.register({
+		plugin: require('./services/registerConfig')
 	});
 
 	await server.register({
 		plugin: require('./services/databaseConnector')
+	});
+
+	await server.register({
+		plugin: require('./services/authJwt')
 	});
 
 	await server.register({

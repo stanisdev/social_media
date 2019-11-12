@@ -2,14 +2,16 @@
 
 const { isEmpty } = require('lodash');
 const Boom = require('@hapi/boom');
+const JWT = require('jsonwebtoken');
 
 /**
  * Class for processing all kind of user's authorization acts
  */
 class AuthService {
-	constructor(db, mailer) {
+	constructor(db, mailer, config) {
 		this.db = db;
 		this.mailer = mailer;
+		this.config = config;
 	}
 
 	resetPassword() {
@@ -109,8 +111,35 @@ class AuthService {
 			throw Boom.badRequest('User validation error');
 		}
 
-		// await user.save();
-		// @todo: use transaction within several additional actions
+		await user.assertRegistration(confirmCode);
+	}
+
+	/**
+	 * Login user by getting JWT token
+	 */
+	async login({ email, password }) {
+		const result = await this.db.User.findByEmail(email);
+		if (!(result instanceof Object) || !(result.User instanceof Object)) {
+			throw Boom.badRequest('Wrong email/password');
+		}
+		const user = result.User;
+		if (user.state < 1) {
+			throw new Error('You did not confirm the email'); // @todo: replace by another construction
+		}
+		const isValid = await user.checkPassword(password);
+		if (!isValid) {
+			throw Boom.badRequest('Wrong email/password');
+		}
+
+		const token = await JWT.sign(
+			{
+				id: user.id,
+				name: user.first_name
+			},
+			this.config.auth.secret
+		);
+		user.setLastVisit(); // it should not be awaited
+		return token;
 	}
 }
 

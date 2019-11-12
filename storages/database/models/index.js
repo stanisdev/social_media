@@ -44,7 +44,7 @@ db.Sequelize = Sequelize;
 /**
  * Prevent being displayed an error as unfriendly
  */
-db.logError = (error) => {
+db.logError = error => {
 	let output;
 	if (!(error instanceof Error)) {
 		output = { name: 'NotAnError' };
@@ -55,7 +55,9 @@ db.logError = (error) => {
 					const data = JSON.parse(JSON.stringify(error));
 					const { errors } = data;
 					const result = errors.map(error => {
-						return pickBy(error, (_, key) => ['message', 'type', 'value'].includes(key));
+						return pickBy(error, (_, key) =>
+							['message', 'type', 'value'].includes(key)
+						);
 					});
 					output = {
 						name: error.name,
