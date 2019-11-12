@@ -1,7 +1,11 @@
 'use strict';
 
 const { isEmpty } = require('lodash');
+const Boom = require('@hapi/boom');
 
+/**
+ * Class for processing all kind of user's authorization acts
+ */
 class AuthService {
 	constructor(db, mailer) {
 		this.db = db;
@@ -51,7 +55,7 @@ class AuthService {
 		try {
 			await newUserEmail.validate();
 		} catch {
-			throw new Error('Validation failed');
+			throw Boom.badRequest('User validation error');
 		}
 
 		await newUserEmail.save();
@@ -81,7 +85,7 @@ class AuthService {
 			where: { code }
 		});
 		if (!(confirmCode instanceof Object)) {
-			throw new Error('Wrong confirmation code');
+			throw Boom.badRequest('Wrong confirmation code');
 		}
 
 		const user = User.build({
@@ -100,8 +104,9 @@ class AuthService {
 
 		try {
 			await user.validate();
-		} catch (err) {
-			throw new Error(err); // @todo: add more adequate handler
+		} catch (error) {
+			this.db.logError(error);
+			throw Boom.badRequest('User validation error');
 		}
 
 		// await user.save();

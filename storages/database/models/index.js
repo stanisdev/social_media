@@ -1,5 +1,6 @@
 'use strict';
 
+const { pickBy } = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
@@ -39,5 +40,36 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+/**
+ * Prevent being displayed an error as unfriendly
+ */
+db.logError = (error) => {
+	let output;
+	if (!(error instanceof Error)) {
+		output = { name: 'NotAnError' };
+	} else {
+		switch (error.name) {
+			case 'SequelizeValidationError': {
+				try {
+					const data = JSON.parse(JSON.stringify(error));
+					const { errors } = data;
+					const result = errors.map(error => {
+						return pickBy(error, (_, key) => ['message', 'type', 'value'].includes(key));
+					});
+					output = {
+						name: error.name,
+						errors: result
+					};
+					break;
+				} catch (error) {}
+			}
+			default:
+				output = { name: 'UnknownError' };
+				break;
+		}
+	}
+	console.log(output);
+};
 
 module.exports = db;
