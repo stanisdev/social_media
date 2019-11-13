@@ -2,7 +2,6 @@
 
 const bcrypt = require('bcrypt');
 const nanoid = require('nanoid/async');
-const nanoidGenerate = require('nanoid/async/generate');
 const saltRounds = 10; // @todo: move to config
 
 module.exports = (sequelize, DataTypes) => {
@@ -15,21 +14,6 @@ module.exports = (sequelize, DataTypes) => {
 			const hash = await bcrypt.hash(this.password + salt, saltRounds);
 			this.password = hash;
 			this.salt = salt;
-		}
-
-		async setUid() {
-			for (let i = 0; i < 10; i++) {
-				const uid = await nanoidGenerate('1234567890', 11);
-				const user = await User.findOne({
-					where: { uid },
-					attributes: ['id']
-				});
-				if (!(user instanceof Object)) {
-					this.uid = uid;
-					return;
-				}
-			}
-			throw new Error('Unexpected error. The uid value cannot be generated.');
 		}
 
 		assertRegistration(confirmCode) {

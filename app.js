@@ -31,6 +31,10 @@ async function init() {
 	});
 
 	await server.register({
+		plugin: require('./services/auxiliaryTools')
+	});
+
+	await server.register({
 		plugin: require('./services/authJwt')
 	});
 

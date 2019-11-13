@@ -3,12 +3,12 @@
 const nodemailer = require('nodemailer');
 
 class Mailer {
-  constructor (config) {
-    this.transporter = nodemailer.createTransport(config);
-  }
+	constructor(config) {
+		this.transporter = nodemailer.createTransport(config);
+	}
 
-  async send (email, options) {
-    /**
+	async send(email, options) {
+		/**
     try {
 			let info = await this.transporter.sendMail({
 				from: 'Social media <media.5ocial@yandex.ru>',
@@ -21,7 +21,7 @@ class Mailer {
 			console.log(error);
 		}
      */
-  }
+	}
 }
 
 module.exports = Mailer;

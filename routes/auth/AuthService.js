@@ -8,10 +8,11 @@ const JWT = require('jsonwebtoken');
  * Class for processing all kind of user's authorization acts
  */
 class AuthService {
-	constructor(db, mailer, config) {
+	constructor({ db, mailer, config, auxiliaryTools }) {
 		this.db = db;
 		this.mailer = mailer;
 		this.config = config;
+		this.auxiliaryTools = auxiliaryTools;
 	}
 
 	resetPassword() {
@@ -102,7 +103,7 @@ class AuthService {
 		}
 
 		await user.cryptPassword();
-		await user.setUid();
+		user.set('uid', await this.auxiliaryTools.generateUid('User'));
 
 		try {
 			await user.validate();
