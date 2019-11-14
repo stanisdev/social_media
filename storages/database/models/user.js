@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 				return this.save({ transaction: t }).then(user => {
 					return models.UserEmail.update(
 						{ user_id: user.id, state: 1 },
-						{ where: { id: confirmCode.user_email_id }, transaction: t }
+						{ where: { id: confirmCode.user_email_id }, transaction: t, limit: 1 }
 					).then(() => {
 						return models.ConfirmationCode.destroy({
 							where: { id: confirmCode.id },

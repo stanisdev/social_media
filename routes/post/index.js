@@ -9,6 +9,7 @@ const plugin = {
 		const options = { postService };
 
 		await server.register([{ plugin: require('./create'), options }]);
+		await server.register([{ plugin: require('./like'), options }]);
 	}
 };
 

@@ -3,6 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
 	const { Sequelize, models } = sequelize;
 	const { Model, Op } = Sequelize;
+	const { UserLike } = models;
 
 	class UserPost extends Model {
 		setState(state) {
@@ -17,6 +18,33 @@ module.exports = (sequelize, DataTypes) => {
 					break;
 				default:
 					throw new Error('Unacceptable state value');
+			}
+		}
+
+		static setOrRemoveLike(action, params) {
+			if (action === 'set') {
+				return sequelize.transaction(t => {
+					return UserLike.create(params, { transaction: t }).then(() => {
+						return UserPost.update(
+							{ likes_count: Sequelize.literal('likes_count + 1') },
+							{ where: { id: params.user_post_id }, transaction: t, limit: 1 }
+						);
+					});
+				});
+			}
+			else {
+				return sequelize.transaction(t => {
+					return UserLike.destroy({
+						where: params,
+						transaction: t,
+						limit: 1
+					}).then(() => {
+						return UserPost.update(
+							{ likes_count: Sequelize.literal('likes_count - 1') },
+							{ where: { id: params.user_post_id }, transaction: t, limit: 1 }
+						);
+					});
+				});
 			}
 		}
 	}
