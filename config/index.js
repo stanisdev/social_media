@@ -3,7 +3,7 @@
 const { merge, isEmpty } = require('lodash');
 const { dirname, join } = require('path');
 const rootDir = dirname(__dirname);
-const { env } = process;
+const env = process.env.NODE_ENV || 'local';
 
 const config = {
 	local: {
@@ -32,7 +32,6 @@ const config = {
 	production: {}
 };
 
-const env = env.NODE_ENV || 'local';
 const result = merge(config.local, config[env]);
 
 module.exports = Object.freeze(result);

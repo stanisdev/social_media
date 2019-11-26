@@ -16,6 +16,13 @@ const plugin = {
 				prefix: '/post'
 			}
 		});
+
+		await server.register({
+			plugin: require('./user'),
+			routes: {
+				prefix: '/user'
+			}
+		});
 	}
 };
 
