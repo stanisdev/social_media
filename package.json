@@ -28,6 +28,7 @@
   "homepage": "https://github.com/stanisdev/social_media#readme",
   "dependencies": {
     "@hapi/hapi": "18.4.0",
+    "amqplib": "^0.5.5",
     "bcrypt": "3.0.6",
     "hapi-auth-jwt2": "8.8.0",
     "lodash": "4.17.15",

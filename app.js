@@ -2,15 +2,12 @@
 
 require('make-promises-safe');
 const Hapi = require('@hapi/hapi');
-const config = require('./config');
+const { port, host } = require('./config');
 
 init();
 
 async function init() {
-	const server = Hapi.server({
-		port: config.port,
-		host: config.host
-	});
+	const server = Hapi.server({ port, host });
 
 	server.events.on(
 		{ name: 'request', channels: 'error' },
@@ -28,6 +25,10 @@ async function init() {
 
 	await server.register({
 		plugin: require('./services/databaseConnector')
+	});
+
+	await server.register({
+		plugin: require('./services/dataDistributor')
 	});
 
 	await server.register({

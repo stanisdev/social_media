@@ -8,11 +8,12 @@ const JWT = require('jsonwebtoken');
  * Class for processing all kind of user's authorization acts
  */
 class AuthService {
-	constructor({ db, mailer, config, auxiliaryTools }) {
+	constructor({ db, mailer, config, auxiliaryTools, dataDistributor }) {
 		this.db = db;
 		this.mailer = mailer;
 		this.config = config;
 		this.auxiliaryTools = auxiliaryTools;
+		this.dataDistributor = dataDistributor;
 	}
 
 	resetPassword() {
@@ -119,11 +120,10 @@ class AuthService {
 	 * Login user by getting JWT token
 	 */
 	async login({ email, password }) {
-		const result = await this.db.User.findByEmail(email);
-		if (!(result instanceof Object) || !(result.User instanceof Object)) {
+		const user = await this.dataDistributor.findUserByEmail(email);
+		if (!(user instanceof Object)) {
 			throw Boom.badRequest('Wrong email/password');
 		}
-		const user = result.User;
 		if (user.state < 1) {
 			throw new Error('You did not confirm the email'); // @todo: replace by another construction
 		}
