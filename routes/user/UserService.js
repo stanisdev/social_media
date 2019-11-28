@@ -1,11 +1,19 @@
 'use strict';
 
 class UserService {
-  constructor({ db }) {
+  constructor({ db, cacheManager }) {
     this.db = db;
+    this.cacheManager = cacheManager;
   }
 
-  changePassword({ user, newPassword, oldPassword }) {
+  async changePassword({ user, newPassword, oldPassword }) {
+    await this.cacheManager.sendQuery({
+      action: 'user.updatePassword',
+      data: {
+        userId: user.id,
+        newPassword
+      }
+    });
   }
 }
 

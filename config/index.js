@@ -22,6 +22,12 @@ const config = {
 			secret: '0UIHDJgRajeJfj85E8849LJR6p', // replace this by another value
 			ttl: '?' // @todo: use it in JWT.crypt
 		},
+		cacheManager: {
+			queues: {
+				forward: 'socialmedia.cache.forward',
+				replyTo: 'socialmedia.cache.replyto'
+			}
+		},
 		cacheEnabled: !isEmpty(env.CACHE_ENABLED) || false
 	},
 	test: {

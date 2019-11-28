@@ -44,6 +44,10 @@ async function init() {
 	});
 
 	await server.register({
+		plugin: require('./services/cacheManager')
+	});
+
+	await server.register({
 		plugin: require('./routes')
 	});
 
