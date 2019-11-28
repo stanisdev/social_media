@@ -37,7 +37,7 @@ class CacheManager {
                 return reject(err);
               }
               channel.consume(this.replyToQueue, (msg) => {
-                const data = JSON.parse(msg.content.toString());
+                const data = JSON.parse(msg.content.toString()); // @todo: add validation
                 this.amqEmitter.emit(data.correlationId, data);
     
                 channel.ack(msg);
@@ -63,16 +63,14 @@ class CacheManager {
       replyTo: this.replyToQueue
     });
 
-    // const result = await new Promise((resolve, reject) => {
-    //   this.amqEmitter.once(correlationId, (data) => {
-    //     console.log('From emitter');
-    //     console.log("Received (reply-to)", data);
-
-    //     resolve(data.correlationId);
-    //   });
-    // });
-    
-    // return result;
+    await new Promise((resolve, reject) => {
+      this.amqEmitter.once(correlationId, (data) => {
+        if (data instanceof Object && data.success === true) {
+          return resolve(data);
+        }
+        reject(new Error('Query failed'));
+      });
+    });
   }
 }
 
