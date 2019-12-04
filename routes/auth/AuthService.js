@@ -16,7 +16,7 @@ class AuthService {
 		this.dataDistributor = dataDistributor;
 	}
 
-	resetPassword() {
+	async resetPassword() {
 		this.db.User.findOne({});
 	}
 

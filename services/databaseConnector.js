@@ -7,7 +7,7 @@ const plugin = {
 		const db = require('../../social_media_models/mariadb/models'); // @todo: fix this
 		await db.sequelize.authenticate();
 
-		server.app.db = {};
+		server.app.db = db;
 	}
 };
 

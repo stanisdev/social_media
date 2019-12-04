@@ -30,6 +30,9 @@ async function register(server, options) {
     for (let i = 0; i < handlers.length; i++) {
       const handlerName = handlers[i];
       const options = config.data[handlerName];
+      if (!(options instanceof Object) || Object.keys(options) < 1) {
+        throw new Error(`You should define config for the "${entity}.${handlerName}" method`);
+      }
       const { prefix } = config;
 
       if (!_.isEmpty(prefix)) {
