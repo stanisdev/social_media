@@ -63,6 +63,7 @@ class CacheManager {
       replyTo: this.replyToQueue
     });
 
+    // @todo: consider and process case if response has not been got within long time
     await new Promise((resolve, reject) => {
       this.amqEmitter.once(correlationId, (data) => {
         if (data instanceof Object && data.success === true) {
