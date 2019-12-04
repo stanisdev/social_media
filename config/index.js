@@ -9,6 +9,7 @@ const config = {
 	local: {
 		rootDir,
 		databaseDir: join(rootDir, 'storages', 'database', 'models'),
+		routesDir: join(rootDir, 'routes'),
 		host: 'localhost',
 		port: 3000,
 		mailer: {

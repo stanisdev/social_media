@@ -48,7 +48,7 @@ async function init() {
 	});
 
 	await server.register({
-		plugin: require('./routes')
+		plugin: require('./services/assignRoutes')
 	});
 
 	await server.start();
