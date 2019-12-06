@@ -29,7 +29,14 @@ const config = {
 				replyTo: 'socialmedia.cache.replyto'
 			}
 		},
-		cacheEnabled: !isEmpty(env.CACHE_ENABLED) || false
+		cacheEnabled: !isEmpty(env.CACHE_ENABLED) || false,
+		redis: {
+			host: '127.0.0.1',
+			db: 0,
+			password: undefined,
+			port: 6379,
+			maxRetriesPerRequest: 1
+		}
 	},
 	test: {
 		port: 3001

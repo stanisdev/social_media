@@ -6,7 +6,8 @@
   "scripts": {
     "local": "NODE_ENV=local nodemon app.js",
     "lint": "./node_modules/.bin/eslint \"routes/**\" \"services/**\" \"routes/**\" \"config/**\" --fix",
-    "prettier": "./node_modules/.bin/prettier \"**/*.js\" --write"
+    "prettier": "./node_modules/.bin/prettier \"**/*.js\" --write",
+    "warmup-cache": "node ./services/cache/warmUp.js"
   },
   "repository": {
     "type": "git",
@@ -29,8 +30,9 @@
   "dependencies": {
     "@hapi/hapi": "18.4.0",
     "amqplib": "0.5.5",
-    "bcrypt": "3.0.6",
+    "glob": "7.1.6",
     "hapi-auth-jwt2": "8.8.0",
+    "ioredis": "4.14.1",
     "lodash": "4.17.15",
     "make-promises-safe": "5.1.0",
     "nanoid": "2.1.6",

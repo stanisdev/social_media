@@ -28,7 +28,7 @@ async function init() {
   });
 
   await server.register({
-    plugin: require('./services/dataDistributor')
+    plugin: require('./services/redisConnector')
   });
 
   await server.register({

@@ -133,10 +133,7 @@ class AuthService {
 		}
 
 		const token = await JWT.sign(
-			{
-				id: user.id,
-				name: user.first_name
-			},
+			{ id: user.id },
 			this.config.auth.secret
 		);
 		user.setLastVisit(); // it should not be awaited
