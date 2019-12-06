@@ -10,16 +10,18 @@ async function register(server, options) {
 
   const directories = fs.readdirSync(routesDir, { withFileTypes: true })
     .filter(entity => entity.isDirectory())
-    .map(dir => dir.name)
-    .filter((d) => d === 'auth'); // @todo: remove this
+    .map(dir => dir.name);
 
+  /**
+   * iterate over folders
+   */
   for (let i = 0; i < directories.length; i++) {
     const directory = directories[i];
 
     const entity = _.startCase(_.toLower(directory));
-    const routesClassPath = join(routesDir, directory,  entity + 'Routes');
-    const routesConfigPath = join(routesDir, directory,  entity + 'Config');
-    const routesServicePath = join(routesDir, directory,  entity + 'Service');
+    const routesClassPath = join(routesDir, directory, entity + 'Routes');
+    const routesConfigPath = join(routesDir, directory, entity + 'Config');
+    const routesServicePath = join(routesDir, directory, entity + 'Service');
 
     const RoutesClass = require(routesClassPath);
     const ServiceClass = require(routesServicePath);
@@ -27,6 +29,9 @@ async function register(server, options) {
     const routesInstance = new RoutesClass();
     const handlers = Object.getOwnPropertyNames(RoutesClass.prototype).filter(m => m !== 'constructor');
     
+    /**
+     * iterate over class methods
+     */
     for (let i = 0; i < handlers.length; i++) {
       const handlerName = handlers[i];
       const options = config.data[handlerName];
@@ -36,7 +41,11 @@ async function register(server, options) {
       const { prefix } = config;
 
       if (!_.isEmpty(prefix)) {
-        options.path = urlJoin(prefix, options.path);
+        let path = urlJoin(prefix, options.path);
+        if (path.endsWith('/')) {
+          path = path.slice(0, -1);
+        }
+        options.path = path;
       }
       options.handler = routesInstance[handlerName].bind({
         [`${directory.toLowerCase()}Service`]: new ServiceClass(server.app)
