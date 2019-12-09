@@ -6,7 +6,7 @@ const urlJoin = require('url-join');
 const { join } = require('path');
 
 async function register(server, options) {
-  const { routesDir } = server.app.config;
+  const routesDir = join(server.app.config.apiDir, 'routes');
 
   const directories = fs.readdirSync(routesDir, { withFileTypes: true })
     .filter(entity => entity.isDirectory())

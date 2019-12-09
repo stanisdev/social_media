@@ -2,7 +2,7 @@
 
 require('make-promises-safe');
 const Hapi = require('@hapi/hapi');
-const { port, host } = require('./config');
+const { port, host } = require('../CONFIG');
 
 init();
 

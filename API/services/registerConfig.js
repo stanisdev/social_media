@@ -3,7 +3,7 @@
 const plugin = {
   name: 'Register config object in global variable',
   register: async function(server, options) {
-    const config = require('../config');
+    const config = require('../../CONFIG');
     server.app.config = config;
   }
 };
