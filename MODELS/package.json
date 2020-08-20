@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/stanisdev/social_media_models#readme",
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "lodash": "^4.17.15",
     "mariadb": "^2.1.4",
     "nanoid": "^2.1.7",
